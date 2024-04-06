@@ -97,10 +97,10 @@ When you have finished the assignment, zip your repo (make sure to include .git 
 
 Thank you and good luck! 🙏
 
-
 ## Notes
+
 - To run the tests, `npm test` can be used
 
-
 ## Further improvements
+
 - Setup integration tests to actually the database for all the operations instead of mocking them
