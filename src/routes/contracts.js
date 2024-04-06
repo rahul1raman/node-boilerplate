@@ -1,12 +1,9 @@
 const { Router } = require('express');
 const router = Router();
-const {getContractById} = require('../controllers/contractsController');
+const {getContractById, getAllContracts} = require('../controllers/contractsController');
 
-/**
- * Returns the contract only if it belongs to the profile calling
- * @returns contract by id
- */
 router.get('/:id', getContractById);
+router.get('/', getAllContracts);
 
 module.exports = {
     contract: router

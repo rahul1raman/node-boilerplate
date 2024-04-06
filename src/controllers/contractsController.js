@@ -1,5 +1,9 @@
-const { fetchContractById } = require("../readers/contractsReader");
+const { fetchContractById, fetchAllContracts } = require("../readers/contractsReader");
 
+/**
+ * Returns the contract only if it belongs to the profile calling
+ * @returns contract by id
+ */
 async function getContractById(req, res) {
     try {
         const { Contract } = req.app.get('models');
@@ -19,6 +23,29 @@ async function getContractById(req, res) {
     }
 }
 
+/**
+ * Returns all non terminated contracts only if it belongs to the user
+ * @returns list of contracts
+ */
+async function getAllContracts(req, res) {
+    try {
+      const { Contract } = req.app.get('models');
+      const profile = req.profile;
+  
+      const contracts = await fetchAllContracts(Contract, profile);
+  
+      if (!contracts || contracts.length === 0) return res.status(404).end();
+  
+      res.json(contracts);
+    } catch (err) {
+      res.status(500).json({
+        message: 'Something went wrong while calling getAllContracts',
+        error: err.message
+      });
+    }
+  }
+
 module.exports = {
     getContractById,
+    getAllContracts,
 };
