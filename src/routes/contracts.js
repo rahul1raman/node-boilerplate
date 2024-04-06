@@ -6,5 +6,5 @@ router.get('/:id', getContractById);
 router.get('/', getAllContracts);
 
 module.exports = {
-  contract: router,
+  contracts: router,
 };
