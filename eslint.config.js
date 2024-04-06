@@ -25,8 +25,17 @@ export default [
   },
   {
     rules: {
+      indent: ["error", 2],
+      semi: ["error", "always"],
       "no-unused-vars": "error",
-      "no-undef": "warn",
+      quotes: ["error", "single"],
+      "no-undef": "error",
+      camelcase: "error",
+      eqeqeq: "error",
+      "no-extra-semi": "error",
+      "no-mixed-spaces-and-tabs": "error",
+      "arrow-spacing": "error",
+      "no-trailing-spaces": "error",
     },
   },
   {
