@@ -1,3 +1,5 @@
+const BadRequestError = require('../errors/BadRequestError');
+const NotFoundError = require('../errors/NotFoundError');
 const { sequelize } = require('../model');
 const JobsReader = require('../readers/jobsReader');
 const { updateBalances, updateJobPaymentStatus } = require('../services/jobsService');
@@ -32,15 +34,15 @@ async function payForJob(req, res, next) {
     const jobsReader = new JobsReader(Job, Contract);
     const job = await jobsReader.findJobByIdForClient(client.id, jobId);
     if (!job) {
-      return res.status(404).json({ message: 'Job not found!' });
+      throw new NotFoundError('Job not found!');
     }
 
     if (job.paid) {
-      return res.status(400).json({ message: 'Job has already been paid for' });
+      throw new BadRequestError('Job has already been paid for');
     }
 
     if (client.balance < job.price) {
-      return res.status(400).json({ message: 'Insufficient balance to pay for the job' });
+      throw new BadRequestError('Insufficient balance to pay for the job');
     }
 
     await sequelize.transaction(async (transaction) => {

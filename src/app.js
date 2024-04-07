@@ -6,6 +6,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const { contracts } = require('./routes/contracts');
 const { jobs } = require('./routes/jobs');
+const { balances } = require('./routes/balances');
 
 // app initialization
 const app = express();
@@ -16,6 +17,7 @@ app.set('models', sequelize.models);
 // routes
 app.use('/contracts', getProfile, contracts);
 app.use('/jobs', getProfile, jobs);
+app.use('/balances', balances);
 
 // Last middleware to use
 app.use(errorHandler);

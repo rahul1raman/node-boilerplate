@@ -1,3 +1,4 @@
+const NotFoundError = require('../errors/NotFoundError');
 const ContractsReader = require('../readers/contractsReader');
 
 /**
@@ -12,7 +13,9 @@ async function getContractById(req, res, next) {
     const contractsReader = new ContractsReader(Contract);
     const contract = await contractsReader.fetchContractById(id, profile);
 
-    if (!contract) return res.status(404).end();
+    if (!contract) {
+      throw new NotFoundError('No contract found for id');
+    }
 
     res.json(contract);
   } catch (err) {
@@ -31,7 +34,9 @@ async function getAllContracts(req, res, next) {
     const contractsReader = new ContractsReader(Contract);
     const contracts = await contractsReader.fetchAllContracts(profile);
 
-    if (!contracts || contracts.length === 0) return res.status(404).end();
+    if (!contracts || contracts.length === 0) {
+      throw new NotFoundError('No contracts found');
+    }
 
     res.json(contracts);
   } catch (err) {

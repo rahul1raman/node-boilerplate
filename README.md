@@ -107,7 +107,7 @@ Thank you and good luck! 🙏
 - Fix linting errors: `npm run lint:fix`
 
 ## Further improvements
-
+- Add more unit tests for coverage
 - Setup integration tests to actually the database for all the operations instead of mocking them
 - Setup functional tests to actual actual API endpoints with payload
 - Support for husky can be improved by including other scripts to, for eg., check if no secrets are being committed to the repo.
