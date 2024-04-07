@@ -1,35 +1,34 @@
 const { Op } = require('sequelize');
 const { CONTRACT_STATUS } = require('../constants');
 
-async function fetchContractById(Contract, id, profile) {
-  const contract = await Contract.findOne({
-    where: {
-      [Op.and]: {
-        id,
-        [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
-      },
-    },
-  });
+class ContractsReader {
+  constructor(Contract) {
+    this.Contract = Contract;
+  }
 
-  return contract;
-}
-
-async function fetchAllContracts(Contract, profile) {
-  const contracts = await Contract.findAll({
-    where: {
-      [Op.and]: {
-        [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
-        status: {
-          [Op.ne]: CONTRACT_STATUS.TERMINATED,
+  async fetchContractById(id, profile) {
+    return this.Contract.findOne({
+      where: {
+        [Op.and]: {
+          id,
+          [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
         },
       },
-    },
-  });
+    });
+  }
 
-  return contracts;
+  async fetchAllContracts(profile) {
+    return this.Contract.findAll({
+      where: {
+        [Op.and]: {
+          [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
+          status: {
+            [Op.ne]: CONTRACT_STATUS.TERMINATED,
+          },
+        },
+      },
+    });
+  }
 }
 
-module.exports = {
-  fetchContractById,
-  fetchAllContracts,
-};
+module.exports = ContractsReader;

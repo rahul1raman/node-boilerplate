@@ -1,29 +1,46 @@
 const { Op } = require('sequelize');
 const { CONTRACT_STATUS } = require('../constants');
 
-const fetchUnpaidJobs = async (Job, Contract, profileId) => {
-  const jobs = await Job.findAll({
-    include: [
-      {
-        model: Contract,
-        where: {
-          [Op.and]: [
-            {
-              [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
-            },
-            { status: CONTRACT_STATUS.IN_PROGRESS },
-          ],
+class JobsReader {
+  constructor(Job, Contract) {
+    this.Job = Job;
+    this.Contract = Contract;
+  }
+
+  async fetchUnpaidJobs(profileId) {
+    return this.Job.findAll({
+      include: [
+        {
+          model: this.Contract,
+          where: {
+            [Op.and]: [
+              {
+                [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
+              },
+              { status: CONTRACT_STATUS.IN_PROGRESS },
+            ],
+          },
         },
+      ],
+      where: {
+        paid: { [Op.not]: true },
       },
-    ],
-    where: {
-      paid: { [Op.not]: true },
-    },
-  });
+    });
+  }
 
-  return jobs;
-};
+  async findJobByIdForClient(clientId, jobId) {
+    return this.Job.findOne({
+      include: [
+        {
+          model: this.Contract,
+          where: { ClientId: clientId },
+        },
+      ],
+      where: {
+        id: jobId,
+      },
+    });
+  }
+}
 
-module.exports = {
-  fetchUnpaidJobs,
-};
+module.exports = JobsReader;

@@ -2,7 +2,6 @@ const { Op } = require('sequelize');
 const { CONTRACT_STATUS } = require('../constants');
 const { fetchUnpaidJobs } = require('./jobsReader');
 
-// Mocking necessary Sequelize models and constants
 const Job = {};
 const Contract = {};
 const profileId = 'someProfileId';

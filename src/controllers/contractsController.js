@@ -1,4 +1,4 @@
-const { fetchContractById, fetchAllContracts } = require('../readers/contractsReader');
+const ContractsReader = require('../readers/contractsReader');
 
 /**
  * Returns the contract only if it belongs to the profile calling
@@ -9,15 +9,15 @@ async function getContractById(req, res) {
     const { Contract } = req.app.get('models');
     const { id } = req.params;
     const profile = req.profile;
-
-    const contract = await fetchContractById(Contract, id, profile);
+    const contractsReader = new ContractsReader(Contract);
+    const contract = await contractsReader.fetchContractById(id, profile);
 
     if (!contract) return res.status(404).end();
 
     res.json(contract);
   } catch (err) {
     res.status(500).json({
-      message: 'Something went wrong while calling getContractById',
+      message: 'Something went wrong',
       error: err.message,
     });
   }
@@ -31,15 +31,15 @@ async function getAllContracts(req, res) {
   try {
     const { Contract } = req.app.get('models');
     const profile = req.profile;
-
-    const contracts = await fetchAllContracts(Contract, profile);
+    const contractsReader = new ContractsReader(Contract);
+    const contracts = await contractsReader.fetchAllContracts(profile);
 
     if (!contracts || contracts.length === 0) return res.status(404).end();
 
     res.json(contracts);
   } catch (err) {
     res.status(500).json({
-      message: 'Something went wrong while calling getAllContracts',
+      message: 'Something went wrong',
       error: err.message,
     });
   }
