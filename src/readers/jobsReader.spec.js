@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { CONTRACT_STATUS } = require('../constants');
-const { fetchUnpaidJobs } = require('./jobsReader');
+
+const JobsReader = require('./jobsReader');
 
 const Job = {};
 const Contract = {};
@@ -19,7 +20,8 @@ describe('fetchUnpaidJobs', () => {
       ]),
     );
 
-    const unpaidJobs = await fetchUnpaidJobs(Job, Contract, profileId);
+    const jobsReader = new JobsReader(Job, Contract);
+    const unpaidJobs = await jobsReader.fetchUnpaidJobs(profileId);
 
     expect(Job.findAll).toHaveBeenCalled();
     expect(Job.findAll).toHaveBeenCalledWith({
@@ -37,7 +39,8 @@ describe('fetchUnpaidJobs', () => {
   it('should return an empty array when there are no unpaid jobs for the given profileId', async () => {
     Job.findAll = jest.fn(() => Promise.resolve([]));
 
-    const unpaidJobs = await fetchUnpaidJobs(Job, Contract, profileId);
+    const jobsReader = new JobsReader(Job, Contract);
+    const unpaidJobs = await jobsReader.fetchUnpaidJobs(profileId);
 
     expect(Job.findAll).toHaveBeenCalled();
     expect(Job.findAll).toHaveBeenCalledWith({
@@ -54,7 +57,8 @@ describe('fetchUnpaidJobs', () => {
     const errorMessage = 'Database connection error';
     Job.findAll = jest.fn(() => Promise.reject(new Error(errorMessage)));
 
-    await expect(fetchUnpaidJobs(Job, Contract, profileId)).rejects.toThrow(errorMessage);
+    const jobsReader = new JobsReader(Job, Contract);
+    await expect(jobsReader.fetchUnpaidJobs(profileId)).rejects.toThrow(errorMessage);
 
     expect(Job.findAll).toHaveBeenCalled();
     expect(Job.findAll).toHaveBeenCalledWith({
@@ -75,7 +79,8 @@ describe('fetchUnpaidJobs', () => {
       return Promise.resolve([]);
     });
 
-    await fetchUnpaidJobs(Job, Contract, profileId);
+    const jobsReader = new JobsReader(Job, Contract);
+    await jobsReader.fetchUnpaidJobs(profileId);
 
     expect(Job.findAll).toHaveBeenCalled();
     expect(Job.findAll).toHaveBeenCalledWith({
@@ -89,7 +94,8 @@ describe('fetchUnpaidJobs', () => {
   it('should handle empty results from Contract model', async () => {
     Job.findAll = jest.fn(() => Promise.resolve([{ id: 1, title: 'Job 1', Contract: null }]));
 
-    const unpaidJobs = await fetchUnpaidJobs(Job, Contract, profileId);
+    const jobsReader = new JobsReader(Job, Contract);
+    const unpaidJobs = await jobsReader.fetchUnpaidJobs(profileId);
 
     expect(Job.findAll).toHaveBeenCalled();
     expect(Job.findAll).toHaveBeenCalledWith({

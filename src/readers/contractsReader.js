@@ -6,22 +6,22 @@ class ContractsReader {
     this.Contract = Contract;
   }
 
-  async fetchContractById(id, profile) {
+  async fetchContractById(id, profileId) {
     return this.Contract.findOne({
       where: {
         [Op.and]: {
           id,
-          [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
+          [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
         },
       },
     });
   }
 
-  async fetchAllContracts(profile) {
+  async fetchAllContracts(profileId) {
     return this.Contract.findAll({
       where: {
         [Op.and]: {
-          [Op.or]: [{ ContractorId: profile.id }, { ClientId: profile.id }],
+          [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
           status: {
             [Op.ne]: CONTRACT_STATUS.TERMINATED,
           },
