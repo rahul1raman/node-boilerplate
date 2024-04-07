@@ -1,5 +1,10 @@
 const ProfileService = require('../services/profileService');
 
+/**
+ * Deposits money into the balance of a client
+ *
+ * @returns Success | error
+ */
 async function deposit(req, res, next) {
   try {
     const { Contract, Job, Profile } = req.app.get('models');
