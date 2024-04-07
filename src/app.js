@@ -17,7 +17,7 @@ app.set('models', sequelize.models);
 // routes
 app.use('/contracts', getProfile, contracts);
 app.use('/jobs', getProfile, jobs);
-app.use('/balances', balances);
+app.use('/balances', getProfile, balances);
 
 // Last middleware to use
 app.use(errorHandler);

@@ -41,6 +41,21 @@ class JobsReader {
       },
     });
   }
+
+  async getTotalJobsAmount(clientId, status = CONTRACT_STATUS.IN_PROGRESS) {
+    return this.Job.sum('price', {
+      include: [
+        {
+          model: this.Contract,
+          where: {
+            ClientId: clientId,
+            status,
+          },
+        },
+      ],
+      where: { paid: { [Op.not]: true } },
+    });
+  }
 }
 
 module.exports = JobsReader;
