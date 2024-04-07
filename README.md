@@ -108,6 +108,6 @@ Thank you and good luck! 🙏
 
 ## Further improvements
 - Add more unit tests for coverage
-- Setup integration tests to actually the database for all the operations instead of mocking them
-- Setup functional tests to actual actual API endpoints with payload
+- Setup integration tests to actually call the database for all the operations instead of mocking them
+- Setup functional tests to actual API endpoints with payload
 - Support for husky can be improved by including other scripts to, for eg., check if no secrets are being committed to the repo.
