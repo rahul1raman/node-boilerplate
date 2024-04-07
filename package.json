@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "nodemon ./src/server.js",
+    "start_debug": "NODE_ENV=development nodemon ./src/server.js",
     "seed": "node ./scripts/seedDb.js",
     "test": "jest",
     "prepare": "husky",

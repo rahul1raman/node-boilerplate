@@ -4,7 +4,7 @@ const ContractsReader = require('../readers/contractsReader');
  * Returns the contract only if it belongs to the profile calling
  * @returns contract by id
  */
-async function getContractById(req, res) {
+async function getContractById(req, res, next) {
   try {
     const { Contract } = req.app.get('models');
     const { id } = req.params;
@@ -16,10 +16,7 @@ async function getContractById(req, res) {
 
     res.json(contract);
   } catch (err) {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
+    next(err);
   }
 }
 
@@ -27,7 +24,7 @@ async function getContractById(req, res) {
  * Returns all non terminated contracts only if it belongs to the user
  * @returns list of contracts
  */
-async function getAllContracts(req, res) {
+async function getAllContracts(req, res, next) {
   try {
     const { Contract } = req.app.get('models');
     const profile = req.profile;
@@ -38,10 +35,7 @@ async function getAllContracts(req, res) {
 
     res.json(contracts);
   } catch (err) {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
+    next(err);
   }
 }
 

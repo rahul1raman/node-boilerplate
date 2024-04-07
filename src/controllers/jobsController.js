@@ -6,7 +6,7 @@ const { updateBalances, updateJobPaymentStatus } = require('../services/jobsServ
  * Get all active unpaid jobs for a user
  * @returns jobs
  */
-async function getUnpaidJobs(req, res) {
+async function getUnpaidJobs(req, res, next) {
   try {
     const { Job, Contract } = req.app.get('models');
     const profileId = req.profile.id;
@@ -14,10 +14,7 @@ async function getUnpaidJobs(req, res) {
     const jobs = await jobsReader.fetchUnpaidJobs(profileId);
     res.json(jobs);
   } catch (err) {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
+    next(err);
   }
 }
 
@@ -26,7 +23,7 @@ async function getUnpaidJobs(req, res) {
  *
  * @returns Success | error
  */
-async function payForJob(req, res) {
+async function payForJob(req, res, next) {
   try {
     const { Job, Contract, Profile } = req.app.get('models');
     const jobId = req.params.job_id;
@@ -53,7 +50,7 @@ async function payForJob(req, res) {
 
     res.json({ message: `Payment successful for job: ${jobId}` });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong!', error: err.message });
+    next(err);
   }
 }
 

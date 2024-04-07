@@ -100,7 +100,7 @@ Thank you and good luck! 🙏
 ## Notes
 
 ### Helpful commands
-
+- Run in debug mode to see error stack trace: `npm run start_debug`
 - Run all tests: `npm run test`
 - Run prettier: `npm run prettier`
 - Display linting errors: `npm run lint`
