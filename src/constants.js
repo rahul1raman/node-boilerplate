@@ -1,6 +1,4 @@
-const ENUMS = {
-
-};
+const ENUMS = {};
 
 module.exports = {
   ENUMS,
