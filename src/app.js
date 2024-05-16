@@ -1,13 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { sequelize } = require('./model');
-const { getProfile } = require('./middleware/getProfile');
 const errorHandler = require('./middleware/errorHandler');
-
-const { contracts } = require('./routes/contracts');
-const { jobs } = require('./routes/jobs');
-const { balances } = require('./routes/balances');
-const { admin } = require('./routes/admin');
+const { sample } = require('./routes/sample');
 
 // app initialization
 const app = express();
@@ -16,10 +11,7 @@ app.set('sequelize', sequelize);
 app.set('models', sequelize.models);
 
 // routes
-app.use('/contracts', getProfile, contracts);
-app.use('/jobs', getProfile, jobs);
-app.use('/balances', getProfile, balances);
-app.use('/admin', admin);
+app.use('/sample', sample);
 
 // Last middleware to use
 app.use(errorHandler);
